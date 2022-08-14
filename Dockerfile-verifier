@@ -1,0 +1,14 @@
+FROM python:3.10-slim-bullseye
+
+WORKDIR /app
+
+COPY ./requirements.txt /requirements/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /requirements/requirements.txt
+
+COPY ./modules /app
+COPY ./data /app/data
+COPY ./config /app/config
+COPY run_analyzer_verifier.py /app/run_analyzer_verifier.py
+COPY analyzer_body.json /app/analyzer_body.json
+
+CMD ["python", "run_analyzer_verifier.py"]

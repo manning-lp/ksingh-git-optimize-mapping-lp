@@ -2,6 +2,7 @@
 Verifies your analyzer body as requested in step 3. Change the content of analyzer_body.json, to check your code
 """
 import requests
+import os
 
 # Original text: adidas by <strong>Stella McCartney</strong> Ultra-boost 21 Shoes
 # rules contains the tokens that need to be returned or not
@@ -74,8 +75,8 @@ def get_tokens_from_analyze(url, body):
 
 if __name__ == '__main__':
     print('Started analyzer verifier')
-
-    elasticsearch_url = "http://localhost:9200/_analyze"
+    HOST = os.environ.get('ELASTICSEARCH_HOST', 'http://localhost:9200')
+    elasticsearch_url = HOST + "/_analyze"
     analyzer_body_file_name = "analyzer_body.json"
     analyzer_tokens = get_tokens_from_analyze(url=elasticsearch_url,
                                               body=load_analyze_body_from_file(analyzer_body_file_name))

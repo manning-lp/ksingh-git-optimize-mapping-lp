@@ -28,9 +28,7 @@ Check if the elasticsearch cluster is running using your browser: http://localho
 direct link to the Kibana console that we use a lot is http://localhost:5601/app/dev_tools#/console.
 
 ### Running the importer
-There are two ways to run the importer. The first one is to run the importer directly from the command line or from 
-your IDE. The second way is using Docker. If you are used to Python, using virtual environments, that is faster and 
-easier during development.
+There are two ways to run the importer. The first one is to run the importer directly from the command line or from your IDE. The second way is using Docker. If you are used to Python, using virtual environments, that is faster and easier during development.
 #### Using python directly
 The importer is a Python script that you can run from the command line. The following command will run the importer:
 ```shell
@@ -44,6 +42,23 @@ The first step is to create a Docker image for the importer. The following comma
 The image can be used to run the importer. The following command will run the importer:
 ```shell
     docker run --network infra_es-net --env ELASTICSEARCH_HOST=http://es-container:9200 sneakers-to-the-max-importer
+```
+
+### Running the analyzer verifier
+The verifier is a script that can be used to verify if the analyzer test you have created works. This accompanies step 3 of M1 in project 2. Like the importer, there are two ways to run it. Prefered is the local python environment (using venv). The other is using pure Docker.
+#### Using python directly
+The verifier is a Python script that you can run from the command line. The following command will run the verifier:
+```shell
+    python run_analyzer_verifier.py
+```
+#### Using Docker
+The first step is to create a Docker image for the verifier. The following command will create the image:
+```shell
+    docker build -t sneakers-to-the-max-verifier -f Dockerfile-verifier .
+```
+The image can be used to run the verifier. The following command will run the verifier:
+```shell
+    docker run --network infra_es-net --env ELASTICSEARCH_HOST=http://es-container:9200 sneakers-to-the-max-verifier
 ```
 
 ## Setting up your python local environment
