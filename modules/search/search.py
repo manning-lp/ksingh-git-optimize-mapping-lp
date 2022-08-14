@@ -1,5 +1,7 @@
 from elasticsearch import Elasticsearch
+from elasticsearch.helpers import bulk
 from datetime import datetime
+from bs4 import BeautifulSoup
 import os
 import json
 import logging
@@ -41,17 +43,6 @@ def create_elasticsearch_index():
     return index_name
 
 
-def index_shoe(shoe, index_name):
-    """
-    Send the provided shoe to Elasticsearch to index that shoe into the provided index.
-    :param shoe: The Shoe to index
-    :param index_name: The index to use for indexing the shoe
-    :return:
-    """
-    search_log.info(f'Indexing shoe: {shoe["id"]} into index with name {index_name}')
-    es.index(index=index_name, id=shoe["id"], body=shoe)
-
-
 def switch_alias_to(index_name):
     """
     Checks if the alias as configured is already available, if so, remove all indexes it points to. When finished add
@@ -75,3 +66,44 @@ def _load_index_body_from_file(file_name):
     """
     with open(file_name, 'r') as file:
         return file.read()
+
+
+def index_shoe_bulk(index_name, file_name):
+    """
+    Use the name of the file to read shoes and send them to Elasticsearch using the Bulk helper.
+    :param index_name: The index to use for indexing the shoe
+    :param file_name: Name of the file containing the shoes
+    :return:
+    """
+    result = bulk(client=es,
+                  index=index_name,
+                  actions=_generate_actions_from_file(file_name),
+                  stats_only=True,
+                  chunk_size=50)
+    search_log.info(f'Indexed {result[0]} shoes and {result[1]} failures')
+
+
+def _generate_actions_from_file(file_name):
+    """
+    Use the file to load shoes line by line and send return them
+    :param file_name: Name of the file to read
+    :return: The read shoes one by one
+    """
+    input_file = open(file_name, 'r')
+    for line in input_file:
+        line_obj = json.loads(line)
+        if line_obj["description"]:
+            line_obj["description"] = _clean_html(line_obj["description"])
+        if line_obj["id"]:
+            logging.info(line_obj)
+        yield line_obj
+
+
+def _clean_html(raw_html):
+    """
+    Removes all HTML tags from the provided text and returned the cleaned text
+    :param raw_html: String containing the text to be cleaned
+    :return: The cleaned string
+    """
+    soup = BeautifulSoup(raw_html, 'html.parser')
+    return soup.get_text()
