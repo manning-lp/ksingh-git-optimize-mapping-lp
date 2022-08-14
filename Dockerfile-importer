@@ -1,0 +1,13 @@
+FROM python:3.10-slim-bullseye
+
+WORKDIR /app
+
+COPY ./requirements.txt /requirements/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /requirements/requirements.txt
+
+COPY ./modules /app
+COPY ./data /app/data
+COPY ./config /app/config
+COPY run_importer.py /app/run_importer.py
+
+CMD ["python", "run_importer.py"]

@@ -1,0 +1,5 @@
+uvicorn~=0.17
+fastapi~=0.78
+elasticsearch~=8.2
+python-dotenv~=0.20
+beautifulsoup4~=4.11
