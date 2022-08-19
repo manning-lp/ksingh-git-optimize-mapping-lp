@@ -2,7 +2,29 @@
   "settings": {
     "number_of_replicas": 0,
     "refresh_interval": "1s",
-    "number_of_shards": 1
+    "number_of_shards": 1,
+    "analysis": {
+      "filter": {
+        "sneaker_stop": {
+        }
+      },
+      "tokenizer": {
+        "slash_pattern": {
+        }
+      },
+      "analyzer": {
+        "searchable_field": {
+        },
+        "searchable_name_field": {
+        },
+        "color_facetable_field": {
+        },
+        "color_searchable_field": {
+        }
+      },
+      "normalizer": {
+      }
+    }
   },
   "mappings": {
     "dynamic": "strict",
