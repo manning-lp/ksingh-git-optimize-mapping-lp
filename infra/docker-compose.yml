@@ -4,6 +4,7 @@ services:
     container_name: es-container
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
+      - ./synonym.txt:/usr/share/elasticsearch/config/analysis/synonym.txt
       - esdata:/usr/share/elasticsearch/data
     environment:
       - xpack.security.enabled=false
