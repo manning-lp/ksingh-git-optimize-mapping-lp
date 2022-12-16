@@ -1,4 +1,4 @@
-# optimize-mapping-index-lp-author
+# optimize-mapping-lp-author
 Repository for liveProject: Optimize Mapping
 
 ## Contents
