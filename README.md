@@ -1,5 +1,5 @@
-# optimized-mapping-of-elasticsearch-index-lp-author
-Repository for liveProject: Optimized Mapping of Elasticsearch Index
+# optimize-mapping-index-lp-author
+Repository for liveProject: Optimize Mapping
 
 ## Contents
 The initial setup of the project contains the files you need to run the complete setup:
